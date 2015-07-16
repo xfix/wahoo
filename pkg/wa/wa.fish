@@ -14,7 +14,7 @@ set -g WAHOO_UNKNOWN_OPT   2
 set -g WAHOO_INVALID_ARG   3
 set -g WAHOO_UNKNOWN_ERR   4
 
-set -g WAHOO_VERSION "0.1.0"
+set -g WAHOO_VERSION "0.2.0"
 set -g WAHOO_CONFIG  "$HOME/.config/wahoo"
 
 function wa::em;  set_color -o yellow ; end
@@ -99,19 +99,11 @@ function wa -d "Wahoo"
 
     case "s" "su" "sub" "submit"
       switch (count $argv)
-        case 2 4
-          wa_submit $argv[2] (begin
-            if set -q argv[3]
-              switch $argv[3]
-                case "-u" "--url"
-                  echo "$argv[4]"
-              end
-            end
-          end)
+        case 3
+          wa_submit $argv[2] $argv[3]
         case "*"
           echo (wa::err)"Argument missing"(wa::off) 1^&2
-          echo "Usage: $_ "(wa::em)"$argv[1]"(wa::off)" "(wa::em)"pkg|themes"(wa::off)"/<name>" 1^&2
-          echo "Usage: $_ "(wa::em)"$argv[1]"(wa::off)" "(wa::em)"pkg|themes"(wa::off)"/<name> "(wa::em)"--url"(wa::off)" <url>" 1^&2
+          echo "Usage: $_ "(wa::em)"$argv[1]"(wa::off)" "(wa::em)"pkg|themes"(wa::off)"/<name> <url>" 1^&2
           return $WAHOO_MISSING_ARG
       end
 
