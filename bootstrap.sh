@@ -287,6 +287,25 @@ lib_wahoo_install() {
     exit 1
   fi
 
+  ## REMOTES ##
+
+  util_log INFO "Updating repository remotes..."
+  git remote rm origin >/dev/null 2>&1
+  git remote add upstream $URL >/dev/null 2>&1
+
+  GITHUB_USER=$(git config github.user)
+  if [ !-z "$GITHUB_USER" ]; then
+    util_log INFO "Forking Wahoo on GitHub..."
+    git remote add origin \
+      "https://github.com"/"$GITHUB_USER"/wahoo >/dev/null 2>&1
+    util_log WARN "Please fork Wahoo on GitHub and help us improve Wahoo."
+    # curl -u "$GITHUB_USER" --fail --silent \
+    #   https://api.github.com/repos/wahoo/forks \
+    #   -d "{\"user\":\"$GITHUB_USER\"}" >/dev/null ^&1
+  else
+    util_log WARN "GitHub user information not detected."
+  fi
+
   ## CONFIGURATION ##
 
   if [ -z ${FISH_CONFIG+_} ]; then
@@ -354,7 +373,7 @@ lib_main_run() {
     fi
   else
     util_log ERROR "Alas, Wahoo failed to install correctly."
-    util_log INFO "Please open a new issue here → git.io/wahoo-issues"
+    util_log INFO "Please complain here → git.io/wahoo-issues"
     exit 1
   fi
 }
