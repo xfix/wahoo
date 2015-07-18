@@ -1,6 +1,6 @@
 # SYNOPSIS
-#    basename string [suffix]
-#    basename [-s suffix] string [string...]
+#   basename <string> [suffix]
+#   basename [-s suffix] <string> [string...]
 #
 # OVERVIEW
 #   Wrap basename so it can handle multiple arguments on Linux.

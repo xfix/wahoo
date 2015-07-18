@@ -1,5 +1,5 @@
 # SYNOPSIS
-#    basename utility
+#   available [name]
 #
 # OVERVIEW
 #   Check if a program is available.
