@@ -294,7 +294,7 @@ lib_wahoo_install() {
   git remote add upstream $URL >/dev/null 2>&1
 
   GITHUB_USER=$(git config github.user)
-  if [ !-z "$GITHUB_USER" ]; then
+  if [ -n "$GITHUB_USER" ]; then
     util_log INFO "Forking Wahoo on GitHub..."
     git remote add origin \
       "https://github.com"/"$GITHUB_USER"/wahoo >/dev/null 2>&1
