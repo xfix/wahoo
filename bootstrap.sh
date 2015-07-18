@@ -121,7 +121,7 @@ util_display_success_msg() {
   util_ink cyan    " \        /  / __ \|   Y  (  <_> |  <_> )"; echo
   util_ink yellow  "  \__/\  /  (____  /___|  /\____/ \____/ "; echo
   util_ink cyan    "       \/        \/     \/   "
-  echo;echo
+  echo; echo
 }
 
 util_env_can() {
