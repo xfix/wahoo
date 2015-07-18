@@ -282,8 +282,8 @@ lib_wahoo_install() {
 
   util_log INFO "Cloning Wahoo from ${URL}"
   if ! git clone -b "${BRANCH}" "${URL}" "${BASE}/.wahoo"; then
-    uti_log ERROR "git could not clone the repo ${BASE}/.wahoo:${BRANCH}"
-    uti_log INFO "Check your environment and try again"
+    util_log ERROR "Could not clone the repository at ${BASE}/.wahoo:${BRANCH}"
+    util_log INFO "Please check your environment (git installed?) and try again."
     exit 1
   fi
 
