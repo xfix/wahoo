@@ -1,5 +1,5 @@
 # SYNOPSIS
-#   set -l segs (fish_prompt_segments) # root dir base
+#   set -l segs (prompt_segments) # root dir base
 #
 # OVERVIEW
 #   Extract the root (top-most parent directory), dirname and basename

@@ -7,7 +7,7 @@ These functions are inmediately available after installing Wahoo. Use in your ow
 
 ## Basic Functions
 
-#### `autoload` _`<path>`_
+#### `autoload` _`<path [path...]>`_
 Autoload a function or completion path. Add the specified list of directories to `$fish_function_path`.
 
 Any `completions` directories are correctly added to the `$fish_complete_path`.
@@ -16,9 +16,9 @@ Any `completions` directories are correctly added to the `$fish_complete_path`.
 autoload $mypath $mypath/completions
 ```
 
-#### `available` _`<utility name>`_
+#### `available` _`<name>`_
 
-Check if a program is available to run. Set `$status` to `0` if the program is available.
+Check if a program is available to run. Sets `$status` to `0` if the program is available.
 
 Use this function to check if a plugin is available before using it:
 
@@ -28,9 +28,9 @@ if available battery
 end
 ```
 
-#### `basename` _`<paths> ...`_
+#### `basename` _`<path> ...`_
 
-Wrap basename so it can handle multiple arguments on Linux.
+Wrap basename so it can handle multiple arguments.
 
 #### `refresh`
 

@@ -1,5 +1,5 @@
 # SYNOPSIS
-#   autoload [directory [directory...]]
+#   autoload <path [path...]>
 #
 # OVERVIEW
 #   Autoload a function or completion path. Add the specified list of
