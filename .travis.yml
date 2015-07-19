@@ -5,13 +5,17 @@ os:
 
 sudo: false
 
-addons:
-  apt:
-    packages:
-    - fish
+#addons:
+#  apt:
+#    packages:
+#    - fish
 
 before_install:
   - curl -L git.io/wa | sh
+
+cache:
+  directories:
+  - $HOME/src/fish
 
 notifications:
   webhooks:
