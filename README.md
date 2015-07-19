@@ -8,7 +8,7 @@
 <br>
 
 <p align="center">
-  <a href="https://github.com/bucaran/wahoo/blob/master/README.md">
+  <a href="https://github.com/fish-shell/wahoo/blob/master/README.md">
   <img width="35%" src="https://cloud.githubusercontent.com/assets/8317250/7772540/c6929db6-00d9-11e5-86bc-4f65533243e9.png">
   </a>
 </p>
@@ -24,12 +24,12 @@
 |
 <b><a href="#advanced">Advanced</a></b>
 |
-<b><a href="https://github.com/bucaran/wahoo/wiki/Screencasts">Screencasts</a></b>
+<b><a href="https://github.com/fish-shell/wahoo/wiki/Screencasts">Screencasts</a></b>
 |
 <b><a href="/CONTRIBUTING.md">Contributing</a></b>
 
   <p align="center">
-    <a href="https://gitter.im/bucaran/wahoo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+    <a href="https://gitter.im/fish-shell/wahoo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
       <img src="https://badges.gitter.im/Join%20Chat.svg">
     </a>
   </p>
@@ -41,7 +41,7 @@
 
 _Wahoo_ is an all-purpose framework and package manager for the [fishshell][Fishshell]. It looks after your configuration and packages. It's lightining fast and easy to use.
 
-Wahoo only keeps a URL registry of packages, if you want to contribute please [fork and send us a PR](https://github.com/bucaran/wahoo/fork).
+Wahoo only keeps a URL registry of packages, if you want to contribute please [fork and send us a PR](https://github.com/fish-shell/wahoo/fork).
 
 # Install
 
@@ -240,8 +240,8 @@ end
 [MIT](http://opensource.org/licenses/MIT) © [Jorge Bucaran][author] et [al][contributors] :heart:
 
 [author]: http://about.bucaran.me
-[contributors]: https://github.com/bucaran/wahoo/graphs/contributors
-[travis-logo]: http://img.shields.io/travis/bucaran/wahoo.svg?style=flat-square
-[travis]: https://travis-ci.org/bucaran/wahoo
+[contributors]: https://github.com/fish-shell/wahoo/graphs/contributors
+[travis-logo]: http://img.shields.io/travis/fish-shell/wahoo.svg?style=flat-square
+[travis]: https://travis-ci.org/fish-shell/wahoo
 [fishshell]: http://fishshell.com
-[wahoo-pulls-link]: https://github.com/bucaran/wahoo/pulls
+[wahoo-pulls-link]: https://github.com/fish-shell/wahoo/pulls
