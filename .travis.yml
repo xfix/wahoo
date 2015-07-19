@@ -16,7 +16,7 @@ before_install:
 script:
   - echo "The Fishshell Framework"
   - uname -a
-  - fish -c 'wa version'
+  - fish -li -c 'wa version'
 
 notifications:
   webhooks:
