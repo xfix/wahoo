@@ -12,7 +12,7 @@
 #   CUSTOM      User custom path. $BASE/.dotfiles by default.
 #   PROTOCOL    https by default.
 #   HOST        github.com by default.
-#   REPO        bucaran/wahoo by default.
+#   REPO        fish-shell/wahoo by default.
 #   BRANCH      master by default.
 #
 # API
@@ -271,7 +271,7 @@ lib_wahoo_install() {
   fi
 
   if [ -z ${REPO+_} ]; then
-    REPO="bucaran/wahoo"
+    REPO="fish-shell/wahoo"
   fi
 
   if [ -z ${BRANCH+_} ]; then
