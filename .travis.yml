@@ -1,15 +1,25 @@
 language: c
 os:
   - linux
-  - osx
+#  - osx
 
-sudo: required
+sudo: false
 
-script:
-  - echo "Wahoo"
+addons:
+  apt:
+    packages:
+    - fish
 
 before_install:
   - curl -L git.io/wa | sh
+
+script:
+  - echo "The Fishshell Framework"
+  - uname -a
+
+#cache:
+#  directories:
+#  - $HOME/src/fish
 
 notifications:
   webhooks:
