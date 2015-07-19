@@ -34,8 +34,8 @@ function wa_submit -a name url -d "Submit a package to the registry"
       return $WAHOO_INVALID_ARG
     else
       echo "$url" > $WAHOO_PATH/db/$name
-      echo (wa::em)"$pkg added to the "(dirname $name)" registry."(wa::off)
-      open "https://github.com"/$user/wahoo
+      echo (wa::em)"$pkg added to the local "(dirname $name)" registry."(wa::off)
+      echo "Want to contribute? Send us a PR → github.com/fish-shell/wahoo"
       return 0
     end
   end
