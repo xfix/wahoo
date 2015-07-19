@@ -13,11 +13,6 @@ addons:
 before_install:
   - curl -L git.io/wa | sh
 
-script:
-  - echo "The Fishshell Framework"
-  - uname -a
-  - fish -li -c 'wa version'
-
 notifications:
   webhooks:
     urls:
