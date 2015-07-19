@@ -1,0 +1,13 @@
+language: c
+os:
+  - linux
+  - osx
+
+sudo: false
+
+script:
+  - wa g {{NAME}}
+  - should $WAHOO_PATH/pkg/{{NAME}}/test/{{NAME}}.fish
+
+before_install:
+  - curl -L git.io/wa | sh
