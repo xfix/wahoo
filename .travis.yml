@@ -1,21 +1,25 @@
-language: c
+#language: c
+#cache: ccache
 os:
   - linux
   - osx
 
 sudo: false
 
-#addons:
-#  apt:
-#    packages:
-#    - fish
+addons:
+ apt:
+   packages:
+   - fish
 
 before_install:
   - curl -L git.io/wa | sh
 
-cache:
-  directories:
-  - $HOME/src/fish
+script:
+  - echo "The Fishshell Framework"
+
+#cache:
+#  directories:
+#  - $HOME/src/fish
 
 notifications:
   webhooks:
