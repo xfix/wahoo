@@ -1,5 +1,3 @@
-#language: c
-#cache: ccache
 os:
   - linux
   - osx
@@ -16,10 +14,6 @@ before_install:
 
 script:
   - echo "The Fishshell Framework"
-
-#cache:
-#  directories:
-#  - $HOME/src/fish
 
 notifications:
   webhooks:
