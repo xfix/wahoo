@@ -1,7 +1,7 @@
 language: c
 os:
   - linux
-#  - osx
+  - osx
 
 sudo: false
 
@@ -16,10 +16,9 @@ before_install:
 script:
   - echo "The Fishshell Framework"
   - uname -a
-
-#cache:
-#  directories:
-#  - $HOME/src/fish
+  - wa update
+  - wa version
+  - wa destroy
 
 notifications:
   webhooks:
