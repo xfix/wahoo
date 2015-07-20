@@ -8,7 +8,8 @@
 > {{NAME}} for [Wahoo][wahoo].
 
 
-![][version-badge]
+![][wahoo-badge]
+[![][travis-logo]][travis]
 ![][license-badge]
 
 ## Install
@@ -33,8 +34,8 @@ $ {{NAME}}
 [mit]:            http://opensource.org/licenses/MIT
 [author]:         http://github.com/{{USER}}
 [contributors]:   https://github.com/{{USER}}/{{NAME}}/graphs/contributors
-
 [wahoo]:          https://www.github.com/fish-shell/wahoo
-
-[version-badge]:  https://img.shields.io/badge/version-v0.1.0-0077CC.svg?style=flat-square
+[wahoo-badge]:    https://img.shields.io/badge/Wahoo-Framework-FF2848.svg?style=flat-square
 [license-badge]:  https://img.shields.io/badge/license-MIT-444444.svg?style=flat-square
+[travis-logo]:    http://img.shields.io/travis/{{USER}}/{{NAME}}.svg?style=flat-square
+[travis]:         https://travis-ci.org/{{USER}}/{{NAME}}
