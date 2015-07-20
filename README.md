@@ -1,7 +1,9 @@
-> _Wahoo_: The [Fishshell][fishshell] Framework
+> The [Fishshell][fishshell] Framework
 
-[![][travis-logo]][travis] ![](https://img.shields.io/badge/Wahoo-Framework-00b0ff.svg?style=flat-square)
-![](https://img.shields.io/badge/License-MIT-707070.svg?style=flat-square)
+![][fish-badge]
+[![][travis-logo]][travis]
+![][license-badge]
+
 
 <a name="wahoo"></a>
 
@@ -9,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/fish-shell/wahoo/blob/master/README.md">
-  <img width="35%" src="https://cloud.githubusercontent.com/assets/8317250/7772540/c6929db6-00d9-11e5-86bc-4f65533243e9.png">
+  <img width="300px" src="https://cloud.githubusercontent.com/assets/8317250/8765102/40cbf31c-2e38-11e5-930b-134ad949726e.png">
   </a>
 </p>
 
@@ -41,7 +43,7 @@
 
 _Wahoo_ is an all-purpose framework and package manager for the [fishshell][Fishshell]. It looks after your configuration and packages. It's lightining fast and easy to use.
 
-Wahoo only keeps a URL registry of packages, if you want to contribute please [fork and send us a PR](https://github.com/fish-shell/wahoo/fork).
+We love contributions, [fork and send us a PR](https://github.com/fish-shell/wahoo/fork).
 
 # Install
 
@@ -50,7 +52,7 @@ curl -L git.io/wa | sh
 wa help
 ```
 
-Or download and run it yourself:
+Or _download first_ and run it yourself:
 
 ```sh
 curl -L git.io/wa > install
@@ -58,12 +60,9 @@ chmod +x install
 ./install
 ```
 
+> **Note**: If you haven't installed `fish` already, you may need to `sudo` in order to _change the default_ shell.
 
-### `sudo`?
-
-No need to `sudo` if you already have `fish`, but if you are starting from scratch you need to `sudo` in order to change your default shell.
-
-# Getting Started
+# :beginner: Getting Started
 
 Wahoo includes a small utility `wa` to fetch and install new packages and themes.
 
@@ -71,17 +70,17 @@ Wahoo includes a small utility `wa` to fetch and install new packages and themes
 
 Update framework and installed packages.
 
-> *Note*: Unstaged changes are [stashed](https://git-scm.com/book/no-nb/v1/Git-Tools-Stashing) and reapplied after pulling updates from upstream. Committed changes are [rebased](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) with master.
+> If you have unstaged changes in your local copy, these are [stashed](https://git-scm.com/book/no-nb/v1/Git-Tools-Stashing) and reapplied after pulling updates from upstream. Committed changes are [rebased](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) with master.
 
 ## `wa get` _`<package> ...`_
 
 Install one _or more_ themes or packages. To list available packages type `wa use`.
 
-> You can fetch packages via URL as well `wa get URL`
+> You can fetch packages by URL as well via `wa get URL`
 
 ## `wa list`
 
-List only _installed_ packages.
+List installed packages.
 
 > To list packages available for download use `wa get`.
 
@@ -89,7 +88,7 @@ List only _installed_ packages.
 
 Apply a theme. To list available themes type `wa use`.
 
-## `wa remove` _`<package>`_
+## `wa remove` _`<name>`_
 
 Remove a theme or package.
 
@@ -99,13 +98,13 @@ Remove a theme or package.
 
 Scaffold out a new package or theme.
 
-> This creates a new directory under `$WAHOO_CUSTOM/[pkg|themes]/` and adds a starting template.
+> This creates a new directory under `$WAHOO_CUSTOM/{pkg or themes}/` with a starting template.
 
 ## `wa submit` _`pkg/<name>`_ _`[<url>]`_
 
-> _Note:_ The following commands only update your local copy of Wahoo. Please [send us a PR][wahoo-pulls-link] to update the global registry.
+Add a new package. To add a theme use `wa submit` _`themes/<name>`_ _`<url>`_.
 
-Add a new package. To add a theme use `wa submit` _`themes/<name>`_ _`<url>`_
+Make sure to [send us a PR][wahoo-pulls-link] to update the registry.
 
 ## `wa query` _`<variable name>`_
 
@@ -117,114 +116,101 @@ Uninstall _Wahoo_. See [uninstall](#uninstall) for more information.
 
 # Advanced
 
-> Hoot! Ho, brave sir or madam, on your quest to wake the dreamer! Read on if you wish to learn more about Wahoo's internals.
+> Hoot! Ho, brave sir or madam, on your quest to wake the dreamer! Read on if you wish to learn more about Wahoo.
 
-+ [Bootstrap](#bootstrap-process)
++ [Bootstrap](#bootstrap)
++ [Startup](#startup)
 + [Core Library](#core-library)
 + [Packages](#packages)
-  + [Names](#package-names)
+  + [Creating](#creating)
   + [Submitting](#submitting)
-  + [Directory Structure](#package-directory-structure)
   + [Initialization](#initialization)
-  + [Ignoring Packages](#ignoring)
-+ [Uninstall](#uninstall)
+  + [Uninstall](#uninstall)
+  + [Ignoring](#ignoring)
 
-## Bootstrap Process
+## Bootstrap
 
-Wahoo's bootstrap script installs `git` (`fish` if not installed), switches your default shell and modifies `$HOME/.config/fish/config.fish` to load the Wahoo `init.fish` script at the start of a shell session.
+Wahoo's bootstrap script will install `git` and `fish` if not available, switch your default shell and modify `$HOME/.config/fish/config.fish` to source Wahoo's `init.fish` script.
 
-It also extends the `fish_function_path` to autoload Wahoo's core library under `$WAHOO_PATH/lib` and the `$WAHOO_PATH/pkg` directory.
+## Startup
 
-## `init.fish`
+This script runs each time a new session begins, autoloading packages, themes and your _custom_ path (dotfiles) in that order.
 
-Autoloads Wahoo's packages, themes and _custom_ path (in that order), loading any `<package>.fish` files if available. If successful, emits an `init_<package>` event for each package. See [Initialization](#initialization).
+The _custom_ path (`$HOME/.dotfiles` by default) is defined by `$WAHOO_CUSTOM` in `$HOME/.config/fish/config.fish`. Modify this to load your own dotfiles if you have any.
 
-Also autoloads any `functions` directory and sources `init.fish` under the _custom_ path if available.
-
-The _custom_ path, `$HOME/.dotfiles` by default, is defined in `$WAHOO_CUSTOM` and set in `$HOME/.config/fish/config.fish`. You can modify this to your own preferred path.
-
-## Core library
+## Core Library
 
 The core library is a minimum set of basic utility functions that extend your shell.
 
-### `autoload`
-
-Modify the `$fish_function_path` and autoload functions and/or completions.
-
-```fish
-autoload "mypkg/utils" "mypkg/core" "mypkg/lib/completions"
-```
-
-### `refresh`
-
-Short for `exec fish < /dev/tty` causing the fish session to restart.
-
-
-### `git` functions
-
-See [documentation](/lib/git/README.md).
++ [See the documentation](/lib/README.md).
 
 
 ## Packages
 
-Packages are kept under `$WAHOO_PATH/pkg` and themes under `$WAHOO_PATH/themes`.
+### Creating
 
-### Package Names
+> A package name may only contain lowercase letters and hyphens to separate words.
 
-A package name may only contain lowercase letters and hyphens to separate words.
+To scaffold out a new package:
+
+```fish
+$ wa new pkg my_package
+
+my_package/
+  README.md
+  my_package.fish
+  completions/my_package.fish
+```
+
+> Use `wa new theme my_theme` for themes.
+
+Please provide [auto completion](http://fishshell.com/docs/current/commands.html#complete) for your utilities if applicable and describe how your package works in the `README.md`.
+
+
+`my_package.fish` defines a single function:
+
+```fish
+function my_package -d "My package"
+
+end
+```
+
+> Bear in mind that fish lacks a private scope so consider the following options to avoid polluting the global namespace:
+
++ Prefix functions: `my_package_my_func`.
++ Using [blocks](http://fishshell.com/docs/current/commands.html#block).
+
 
 ### Submitting
 
-Run `wa submit <name> <url>` inside the package or theme directory.
+Wahoo keeps a registry of packages under `$WAHOO_PATH/db/`.
 
-### Package Directory Structure
+To create a new entry run:
 
-_Directory Structure_
-```
-wahoo/
-  db/
-    pkg/
-      mypkg
-```
-_Contents of_ `mypkg`
-```
-https://github.com/<USER>/wa-mypkg
+```fish
+wa submit pkg/my_package .../my_package.git
 ```
 
-A package can be as simple as a `mypkg/mypkg.fish` file exposing only a `mypkg` function, or several `function.fish` files, a `README` file, a `completions/mypkg.fish` file with fish [tab-completions](http://fishshell.com/docs/current/commands.html#complete), etc.
+Similarly for themes use:
 
-+ Example:
+```fish
+wa submit theme/my_theme .../my_theme.git
+```
 
-```
-mypkg/
-  README.md
-  mypkg.fish
-  completions/mypkg.fish
-```
+This will add a new entry to your local copy of the registry. Please [send us a PR][wahoo-pulls-link] to update the global registry.
+
 
 ### Initialization
 
-Wahoo loads each `$WAHOO_PATH/<pkg>.fish` on startup and [emits](http://fishshell.com/docs/current/commands.html#emit) `init_<pkg>` events to subscribers with the full path to the package.
+If you want to be [notified](http://fishshell.com/docs/current/commands.html#emit) when your package is loads, declare the following function in your `my_package.fish`:
 
 ```fish
 function init -a path --on-event init_mypkg
-end
 
-function mypkg -d "My package"
 end
 ```
 
-Use the `init` event set up your package environment, load resources, autoload functions, etc.
-
-> The `init` event is optional.
-
-### Ignoring
-
-Remove any packages you wish to turn off using `wa remove <package name>`. You can also set a new global `$WAHOO_IGNORE` in your `~/.config/fish/config.fish` with your ignores. For example:
-
-```fish
-set -g WAHOO_IGNORE skip this that ...
-```
+Use this event to modify the environment, load resources, autoload functions, etc. If your package does not export any functions, you can still use this event to add functionality to your package.
 
 ### Uninstall
 
@@ -232,14 +218,28 @@ Wahoo emits `uninstall_<pkg>` events before a package is removed via `wahoo remo
 
 ```fish
 function uninstall --on-event uninstall_pkg
+
 end
 ```
 
+### Ignoring
+
+Remove any packages you wish to turn off using `wa remove <package name>`. Alternatively, you can set a global env variable `$WAHOO_IGNORE` in your `~/.config/fish/config.fish` with the packages you wish to ignore. For example:
+
+```fish
+set -g WAHOO_IGNORE skip this that ...
+```
+
+
 # License
 
-[MIT](http://opensource.org/licenses/MIT) © [Jorge Bucaran][author] et [al][contributors] :heart:
+[MIT][license] © [Authors][contributors] :heart:
 
-[author]: http://about.bucaran.me
+
+
+[fish-badge]: https://img.shields.io/badge/fish-v2.2.0-FF3157.svg?style=flat-square
+[license]: http://opensource.org/licenses/MIT
+[license-badge]: https://img.shields.io/badge/license-mit-707070.svg?style=flat-square
 [contributors]: https://github.com/fish-shell/wahoo/graphs/contributors
 [travis-logo]: http://img.shields.io/travis/fish-shell/wahoo.svg?style=flat-square
 [travis]: https://travis-ci.org/fish-shell/wahoo

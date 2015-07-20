@@ -1,9 +1,10 @@
-[![](https://img.shields.io/badge/Wahoo-Package-00b0ff.svg?style=flat-square)][Wahoo]
-![](https://img.shields.io/badge/License-MIT-707070.svg?style=flat-square) :fish_cake:
+<p align="center">
+  <a href="https://github.com/fish-shell/wahoo/blob/master/README.md">
+  <img width="100px" src="https://cloud.githubusercontent.com/assets/8317250/8765102/40cbf31c-2e38-11e5-930b-134ad949726e.png">
+  </a>
+</p>
 
 # Core Library
-
-These functions are inmediately available after installing Wahoo. Use in your own plugins and/or themes.
 
 ## Basic Functions
 
@@ -75,8 +76,3 @@ Set `$status` to `0` if the repo has any changes whatsoever, including [tracked 
 
 #### `git_untracked`
 Echo a `\n` separated list of untracked files.
-
-
-
-[Author]: https://github.com/bucaran
-[Wahoo]: https://github.com/bucaran/wahoo
