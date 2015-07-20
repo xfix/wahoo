@@ -2,12 +2,11 @@
 #   Initialize Wahoo.
 #
 # ENV
-#   OSTYPE        Operating system.
-#   GITHUB_USER   Current user's GitHub username.
-#   WAHOO_RESET_PATH    Original $PATH preseved across Wahoo refreshes.
-#   WAHOO_PATH          Set in ~/.config/fish/config.fish
-#   WAHOO_IGNORE        List of packages to ignore.
-#   WAHOO_CUSTOM        Same as WAHOO_PATH. ~/.dotfiles by default.
+#   OSTYPE          Operating system.
+#   RESET_PATH      Original $PATH preseved across Wahoo refreshes.
+#   WAHOO_PATH      Set in ~/.config/fish/config.fish
+#   WAHOO_IGNORE    List of packages to ignore.
+#   WAHOO_CUSTOM    Same as WAHOO_PATH. ~/.dotfiles by default.
 #
 # OVERVIEW
 #   Autoloads Wahoo's packages, themes and custom path (in that order),
@@ -17,19 +16,13 @@
 #   Autoloads functions directory and sources init.fish under
 #   the custom path if available.
 
-if not set -q OSTYPE
-  set -g OSTYPE (uname)
-end
-
-if not set -q GITHUB_USERNAME
-  set -g GITHUB_USERNAME (git config github.user)
-end
-
-if set -q WAHOO_RESET_PATH
-  set PATH $WAHOO_RESET_PATH
+if set -q RESET_PATH
+  set PATH $RESET_PATH
 else
-  set -gx WAHOO_RESET_PATH $PATH
+  set -gx RESET_PATH $PATH
 end
+
+set -q OSTYPE; or set -g OSTYPE (uname)
 
 # Save the head of function path and autoload our core library.
 set -l user_function_path $fish_function_path[1]

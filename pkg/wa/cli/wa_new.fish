@@ -1,9 +1,9 @@
 function wa_new -a option name
   switch $option
     case "p" "pkg" "pack" "packg" "package"
-      set pkg "pkg"
-    case "t" "th" "thm" "theme"
-      set pkg "themes"
+      set option "pkg"
+    case "t" "th" "the" "thm" "theme" "themes"
+      set option "themes"
     case "*"
       echo (wa::err)"$option is not a valid option."(wa::off) 1^&2
       return $WAHOO_INVALID_ARG
@@ -14,17 +14,21 @@ function wa_new -a option name
     return $WAHOO_INVALID_ARG
   end
 
-  if set -l dir (wa_util_mkdir "$pkg/$name")
+  if set -l dir (wa_util_mkdir "$option/$name")
     cd $dir
-    if test $pkg = "pkg"
-      echo "function $name"\n"end"\n > "$dir/$name.fish"
-    else
-      cp "$WAHOO_PATH/themes/default/fish_prompt.fish" "$dir/fish_prompt.fish"
-    end
-    echo "# $name"\n > "$dir/README.md"
-    echo (wa::em)"Directory changed to $dir"(wa::off)
+
+    set -l github (git config github.user)
+    test -z "$github"; and set github "{{USERNAME}}"
+
+    set -l user (git config user.name)
+    test -z "$user"; and set user "{{USERNAME}}"
+
+    wa_new_from_template "$WAHOO_PATH/pkg/wa/templates/$option" \
+      $github $user $name
+
+    echo (wa::em)"Switched to $dir"(wa::off)
   else
-    echo (wa::err)"\$WAHOO_CUSTOM and \$WAHOO_PATH undefined."(wa::off) 1^&2
+    echo (wa::err)"\$WAHOO_CUSTOM and/or \$WAHOO_PATH undefined."(wa::off) 1^&2
     exit $WAHOO_UNKNOWN_ERR
   end
 end
