@@ -1,6 +1,6 @@
 <div align="center">
   <a href="http://github.com/fish-shell/wahoo">
-  <img width=90px  src="https://cloud.githubusercontent.com/assets/8317250/8765102/40cbf31c-2e38-11e5-930b-134ad949726e.png">
+  <img width=90px  src="https://cloud.githubusercontent.com/assets/8317250/8775571/6930d858-2f24-11e5-9629-c3cc833d71e8.png">
   </a>
 </div>
 <br>

@@ -1,6 +1,6 @@
 <div align="center">
   <a href="http://github.com/bucaran/wahoo">
-    <img width=120px  src="https://cloud.githubusercontent.com/assets/8317250/7772540/c6929db6-00d9-11e5-86bc-4f65533243e9.png">
+    <img width=120px  src="https://cloud.githubusercontent.com/assets/8317250/8775571/6930d858-2f24-11e5-9629-c3cc833d71e8.png">
   </a>
 </div>
 
