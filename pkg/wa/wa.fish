@@ -1,7 +1,7 @@
 # SYNOPSIS
 #   Wahoo CLI
 #
-# GLOBALS
+# ENV
 #   WAHOO_VERSION   Version
 #   WAHOO_CONFIG    Wahoo configuration
 #
