@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="http://github.com/bucaran/wahoo">
+  <a href="http://github.com/fish-shell/wahoo">
     <img width=120px  src="https://cloud.githubusercontent.com/assets/8317250/8775571/6930d858-2f24-11e5-9629-c3cc833d71e8.png">
   </a>
 </div>
@@ -22,11 +22,11 @@ Thanks for taking the time to read this guide and please _do_ contribute to Waho
 
 ## Issues
 
-Please [open an issue](https://github.com/bucaran/wahoo/issues) for bug reports / patches. Include your OS version, code examples, stack traces and everything you can to help you debug your problem.
+Please [open an issue](https://github.com/fish-shell/wahoo/issues) for bug reports / patches. Include your OS version, code examples, stack traces and everything you can to help you debug your problem.
 
 If you have a new feature or large change in mind, please open a new issue with your suggestion to discuss the idea together.
 
-You are also welcome to our [Gitter room](https://gitter.im/bucaran/wahoo).
+You are also welcome to our [Gitter room](https://gitter.im/fish-shell/wahoo).
 
 ## Package Repositories
 
