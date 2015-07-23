@@ -157,7 +157,7 @@ lib_fish_install() {
     fi
 
     mkdir -p "${HOME}/src"
-    git clone $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
+    git clone -q --depth 1 $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
     cd "${HOME}/${FISH_SOURCE}"
     autoconf
     ./configure --without-xsel
@@ -166,7 +166,7 @@ lib_fish_install() {
   }
 
   installer_darwin_run() {
-    git clone $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
+    git clone -q --depth 1 $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
     cd "${HOME}/${FISH_SOURCE}"
     sudo xcodebuild install
     ditto /tmp/fish.dst /
@@ -250,103 +250,67 @@ lib_autoconf_install() {
 }
 
 lib_wahoo_install() {
-  if [ -z ${BASE+_} ]; then
-    BASE="${HOME}"
-  fi
-
+  test -z ${BASE+_} && BASE="${HOME}"
   util_log INFO "Resolving Wahoo path → ${BASE}/.wahoo"
 
   if [ -d "${BASE}/.wahoo" ]; then
     util_log ERROR "Wahoo is already installed."
-    util_log INFO "If you want to update Wahoo try: 'fish update'"
+    util_log INFO "If you would like to update Wahoo please call \"fish -c 'wa update\"."
     exit 1
   fi
 
-  if [ -z ${PROTOCOL+_} ]; then
-    PROTOCOL="https"
-  fi
+  ## GIT CLONE ##
 
-  if [ -z ${HOST+_} ]; then
-    HOST="github.com"
-  fi
-
-  if [ -z ${REPO+_} ]; then
-    REPO="fish-shell/wahoo"
-  fi
-
-  if [ -z ${BRANCH+_} ]; then
-    BRANCH="master"
-  fi
-
+  test -z ${PROTOCOL+_} && PROTOCOL="https"
+  test -z ${HOST+_} && HOST="github.com"
+  test -z ${REPO+_} && REPO="fish-shell/wahoo"
+  test -z ${BRANCH+_} && BRANCH="master"
   URL="${PROTOCOL}://${HOST}/${REPO}.git"
 
-  util_log INFO "Cloning Wahoo from ${URL}"
-  if ! git clone -b "${BRANCH}" "${URL}" "${BASE}/.wahoo"; then
-    util_log ERROR "Could not clone the repository at ${BASE}/.wahoo:${BRANCH}"
+  util_log INFO "Cloning Wahoo → ${URL}"
+
+  if ! git clone -q --depth 1 -b "${BRANCH}" "${URL}" "${BASE}/.wahoo"; then
+    util_log ERROR "Could not clone the repository → ${BASE}/.wahoo:${BRANCH}"
     util_log INFO "Please check your environment (git installed?) and try again."
     exit 1
   fi
 
-  ## REMOTES ##
-
-  util_log INFO "Updating repository remotes..."
-  git remote rm origin >/dev/null 2>&1
-  git remote add upstream $URL >/dev/null 2>&1
-
-  GITHUB_USER=$(git config github.user)
-  if [ -n "$GITHUB_USER" ]; then
-    util_log INFO "Forking Wahoo on GitHub..."
-    git remote add origin \
-      "https://github.com"/"$GITHUB_USER"/wahoo >/dev/null 2>&1
-    util_log WARN "Please fork Wahoo on GitHub and help us improve Wahoo."
-    # curl -u "$GITHUB_USER" --fail --silent \
-    #   https://api.github.com/repos/wahoo/forks \
-    #   -d "{\"user\":\"$GITHUB_USER\"}" >/dev/null ^&1
+  pushd ${BASE}/.wahoo >/dev/null 2>&1
+  REF=$(git config remote.upstream.url)
+  if [ -z "${REF}" ]; then
+    git remote add upstream $URL
   else
-    util_log WARN "GitHub user information not detected."
+    git remote set-url upstream $URL
   fi
+  popd >/dev/null 2>&1
 
   ## CONFIGURATION ##
 
-  if [ -z ${FISH_CONFIG+_} ]; then
-    FISH_CONFIG="${HOME}/.config/fish"
-  fi
-
-  INIT="init.fish"
-  util_log INFO "Looking for a previous fish configuration..."
-
+  test -z ${FISH_CONFIG+_} && FISH_CONFIG="${HOME}/.config/fish"
   if [ -e "${FISH_CONFIG}/config.fish" ]; then
-    util_log INFO "Found ${FISH_CONFIG}/config.fish"
-    util_log WARN "Backing up to ${FISH_CONFIG}/config.copy"
+    util_log INFO "Found existing fish configuration → ${FISH_CONFIG}/config.fish"
+    util_log WARN "Writing back-up copy → ${FISH_CONFIG}/config.copy"
     cp "${FISH_CONFIG}/config.fish" "${FISH_CONFIG}/config.copy"
   else
-    util_log INFO  "Adding default fish configuration."
+    util_log INFO "Creating default configuration"
     lib_fish_create_config
   fi
 
-  util_log WARN "Adding Wahoo bootstrap to ${FISH_CONFIG}/config.fish"
+  util_log INFO "Adding Wahoo bootstrap → ${FISH_CONFIG}/config.fish"
 
-  if [ -z ${CUSTOM+_} ]; then
-    CUSTOM="${BASE}/.dotfiles"
-  fi
-
-  echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
-  | sed -e "s|$HOME|\$HOME|")" > "${FISH_CONFIG}/config.fish"
-
-  echo "set -g WAHOO_CUSTOM $(echo "${CUSTOM}" \
-  | sed -e "s|$HOME|\$HOME|")" >> "${FISH_CONFIG}/config.fish"
-
-  echo "source \$WAHOO_PATH/${INIT}" >> "${FISH_CONFIG}/config.fish"
-
+  FISH_CONFIG_FILE="${FISH_CONFIG}/config.fish"
   WAHOO_CONFIG="${HOME}/.config/wahoo"
+  test -z ${CUSTOM+_} && CUSTOM="${BASE}/.dotfiles"
+  echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
+  | sed -e "s|$HOME|\$HOME|")" > ${FISH_CONFIG_FILE}
+  echo "set -g WAHOO_CUSTOM $(echo "${CUSTOM}" \
+  | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
+  echo "source \$WAHOO_PATH/init.fish" >> ${FISH_CONFIG_FILE}
 
   if [ ! -d "${WAHOO_CONFIG}" ]; then
-    util_log WARN "Adding Wahoo configuration in ${WAHOO_CONFIG}"
+    util_log INFO "Writing Wahoo configuration → ${WAHOO_CONFIG}"
     mkdir -p "${WAHOO_CONFIG}"
-
-    if [ ! -e "${WAHOO_CONFIG}/theme" ]; then
-      echo default >> "${WAHOO_CONFIG}/theme"
-    fi
+    test -f "${WAHOO_CONFIG}/theme" || echo default > "${WAHOO_CONFIG}/theme"
   fi
 }
 
