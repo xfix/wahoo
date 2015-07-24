@@ -264,23 +264,25 @@ lib_wahoo_install() {
   test -z ${HOST+_} && HOST="github.com"
   test -z ${REPO+_} && REPO="fish-shell/wahoo"
   test -z ${BRANCH+_} && BRANCH="master"
-  local URL="${PROTOCOL}://${HOST}/${REPO}.git"
+  local GIT_URL="${PROTOCOL}://${HOST}/${REPO}.git"
 
-  util_log INFO "Cloning Wahoo → ${URL}"
-
-  if ! git clone -q --depth 1 -b "${BRANCH}" "${URL}" "${BASE}/.wahoo"; then
+  util_log INFO "Cloning Wahoo → ${GIT_URL}"
+  if ! git clone -q --depth 1 -b "${BRANCH}" "${GIT_URL}" "${BASE}/.wahoo"; then
     util_log ERROR "Could not clone the repository → ${BASE}/.wahoo:${BRANCH}"
     util_log INFO "Please check your environment ('git' installed?) and try again"
     exit 1
   fi
 
   pushd ${BASE}/.wahoo >/dev/null 2>&1
-  local REF=$(git config remote.upstream.url)
-  if [ -z "${REF}" ]; then
-    git remote add upstream $URL
+  local GIT_REV=$(git rev-parse HEAD) >/dev/null 2>&1
+  local GIT_UPSTREAM=$(git config remote.upstream.url)
+  if [ -z "${GIT_UPSTREAM}" ]; then
+    git remote add upstream ${GIT_URL}
   else
-    git remote set-url upstream $URL
+    git remote set-url upstream ${GIT_URL}
   fi
+  util_log INFO "Wahoo revision id → ${GIT_REV}"
+  echo ${GIT_REV} > "${WAHOO_CONFIG}/revision"
   popd >/dev/null 2>&1
 
   ## CONFIGURATION ##
