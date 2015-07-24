@@ -282,7 +282,6 @@ lib_wahoo_install() {
     git remote set-url upstream ${GIT_URL}
   fi
   util_log INFO "Wahoo revision id → ${GIT_REV}"
-  echo ${GIT_REV} > "${WAHOO_CONFIG}/revision"
   popd >/dev/null 2>&1
 
   ## CONFIGURATION ##
@@ -312,6 +311,7 @@ lib_wahoo_install() {
     util_log INFO "Writing Wahoo configuration → ${WAHOO_CONFIG}"
     mkdir -p "${WAHOO_CONFIG}"
     test -f "${WAHOO_CONFIG}/theme" || echo default > "${WAHOO_CONFIG}/theme"
+    test -f "${WAHOO_CONFIG}/revision" || echo ${GIT_REV} > "${WAHOO_CONFIG}/revision"
   fi
 }
 
