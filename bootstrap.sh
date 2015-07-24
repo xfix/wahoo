@@ -318,7 +318,7 @@ lib_main_run() {
   util_log INFO "Installing dependencies"
 
   if ! util_env_can "fish"; then
-    util_log INFO  "Installing fish"
+    util_log INFO  "Installing 'fish'"
     if lib_fish_install; then
       util_log INFO "Setting 'fish' as your default shell"
       lib_fish_set_as_default_shell
