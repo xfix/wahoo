@@ -264,7 +264,7 @@ lib_wahoo_install() {
   test -z ${HOST+_} && HOST="github.com"
   test -z ${REPO+_} && REPO="fish-shell/wahoo"
   test -z ${BRANCH+_} && BRANCH="master"
-  URL="${PROTOCOL}://${HOST}/${REPO}.git"
+  local URL="${PROTOCOL}://${HOST}/${REPO}.git"
 
   util_log INFO "Cloning Wahoo → ${URL}"
 
@@ -275,7 +275,7 @@ lib_wahoo_install() {
   fi
 
   pushd ${BASE}/.wahoo >/dev/null 2>&1
-  REF=$(git config remote.upstream.url)
+  local REF=$(git config remote.upstream.url)
   if [ -z "${REF}" ]; then
     git remote add upstream $URL
   else
@@ -297,8 +297,8 @@ lib_wahoo_install() {
 
   util_log INFO "Adding Wahoo bootstrap → ${FISH_CONFIG}/config.fish"
 
-  FISH_CONFIG_FILE="${FISH_CONFIG}/config.fish"
-  WAHOO_CONFIG="${HOME}/.config/wahoo"
+  local FISH_CONFIG_FILE="${FISH_CONFIG}/config.fish"
+  local WAHOO_CONFIG="${HOME}/.config/wahoo"
   test -z ${CUSTOM+_} && CUSTOM="${BASE}/.dotfiles"
   echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
   | sed -e "s|$HOME|\$HOME|")" > ${FISH_CONFIG_FILE}
