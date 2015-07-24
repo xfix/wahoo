@@ -106,11 +106,11 @@ util_log() {
 }
 
 util_log_default_success() {
-  util_log INFO "$1 successfully installed."
+  util_log INFO "$1 successfully installed"
 }
 
 util_log_default_error() {
-  util_log ERROR "You need admin permissions to continue."
+  util_log ERROR "You need admin permissions to continue"
 }
 
 util_display_success_msg() {
@@ -173,11 +173,11 @@ lib_fish_install() {
   }
 
   if ! util_env_can git; then
-    util_log INFO "Installing git..."
+    util_log INFO "Installing 'git'"
     if lib_git_install; then
       util_log_default_success "git"
     else
-      util_log ERROR "You need admin permissions to install git"
+      util_log ERROR "You need admin permissions to install 'git'"
       exit 1
     fi
   fi
@@ -193,13 +193,13 @@ lib_fish_install() {
         exit 1
       fi
     else
-      util_log ERROR "You need Homebrew or Xcode tools."
-      util_log INFO "For Xcode try: xcode-select --install"
+      util_log ERROR "You need 'Homebrew' or 'Xcode' commandline tools"
+      util_log INFO "For Xcode try: 'xcode-select --install'"
       exit 1
     fi
   else
     if ! util_env_can "autoconf"; then
-      util_log INFO "Installing autoconf..."
+      util_log INFO "Installing 'autoconf'"
       if lib_autoconf_install; then
         util_log_default_success "autoconf"
       else
@@ -254,8 +254,7 @@ lib_wahoo_install() {
   util_log INFO "Resolving Wahoo path → ${BASE}/.wahoo"
 
   if [ -d "${BASE}/.wahoo" ]; then
-    util_log ERROR "Wahoo is already installed."
-    util_log INFO "If you would like to update Wahoo please call \"fish -c 'wa update\"."
+    util_log WARN "Existing installation detected, aborting"
     exit 1
   fi
 
@@ -271,7 +270,7 @@ lib_wahoo_install() {
 
   if ! git clone -q --depth 1 -b "${BRANCH}" "${URL}" "${BASE}/.wahoo"; then
     util_log ERROR "Could not clone the repository → ${BASE}/.wahoo:${BRANCH}"
-    util_log INFO "Please check your environment (git installed?) and try again."
+    util_log INFO "Please check your environment ('git' installed?) and try again"
     exit 1
   fi
 
@@ -288,7 +287,7 @@ lib_wahoo_install() {
 
   test -z ${FISH_CONFIG+_} && FISH_CONFIG="${HOME}/.config/fish"
   if [ -e "${FISH_CONFIG}/config.fish" ]; then
-    util_log INFO "Found existing fish configuration → ${FISH_CONFIG}/config.fish"
+    util_log INFO "Found existing 'fish' configuration → ${FISH_CONFIG}/config.fish"
     util_log WARN "Writing back-up copy → ${FISH_CONFIG}/config.copy"
     cp "${FISH_CONFIG}/config.fish" "${FISH_CONFIG}/config.copy"
   else
@@ -316,12 +315,12 @@ lib_wahoo_install() {
 
 lib_main_run() {
   util_log TITLE "== Bootstraping Wahoo =="
-  util_log INFO "Installing dependencies..."
+  util_log INFO "Installing dependencies"
 
   if ! util_env_can "fish"; then
-    util_log INFO  "Installing fish..."
+    util_log INFO  "Installing fish"
     if lib_fish_install; then
-      util_log WARN "Setting fish as your default shell."
+      util_log INFO "Setting 'fish' as your default shell"
       lib_fish_set_as_default_shell
     fi
   fi
@@ -336,7 +335,7 @@ lib_main_run() {
       util_env_swap_process "fish"
     fi
   else
-    util_log ERROR "Alas, Wahoo failed to install correctly."
+    util_log ERROR "Alas, Wahoo failed to install correctly"
     util_log INFO "Please complain here → git.io/wahoo-issues"
     exit 1
   fi
