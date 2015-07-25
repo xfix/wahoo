@@ -18,7 +18,8 @@ before_script:
   - tree -h
 script: /bin/sh bootstrap.sh
 after_script:
-  - echo revision: $(cat ~/.config/wahoo/revision)
+  - echo revision : $(cat ~/.config/wahoo/revision)
+  - echo theme    : $(cat ~/.config/wahoo/theme)
   - cd ~/.config/fish; tree -h
   - cd ~/.config/wahoo; tree -h
 notifications:
