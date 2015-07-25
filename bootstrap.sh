@@ -90,7 +90,7 @@ util_log() {
       color=green
       ;;
     SUCCESS)
-      color=green
+      color=blue
       ;;
     *)
       text="$1"
@@ -106,7 +106,7 @@ util_log() {
 }
 
 util_log_default_success() {
-  util_log INFO "$1 successfully installed"
+  util_log SUCCESS "$1 successfully installed"
 }
 
 util_log_default_error() {
@@ -287,22 +287,31 @@ lib_wahoo_install() {
   ## CONFIGURATION ##
 
   test -z ${FISH_CONFIG+_} && FISH_CONFIG="${HOME}/.config/fish"
+  local FISH_CONFIG_FILE="${FISH_CONFIG}/config.fish"
   if [ -e "${FISH_CONFIG}/config.fish" ]; then
-    util_log INFO "Found existing 'fish' configuration → ${FISH_CONFIG}/config.fish"
-    util_log WARN "Writing back-up copy → ${FISH_CONFIG}/config.copy"
-    cp "${FISH_CONFIG}/config.fish" "${FISH_CONFIG}/config.copy"
+    local TIMESTAMP=$(date +%s)
+    local FISH_CONFIG_BK="${FISH_CONFIG}/config.${TIMESTAMP}.copy"
+    util_log INFO "Found existing 'fish' configuration → ${FISH_CONFIG_FILE}"
+    util_log INFO "Writing back-up copy → ${FISH_CONFIG_BK}"
+    cp "${FISH_CONFIG_FILE}" "${FISH_CONFIG_BK}" >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      util_log ERROR "Writing back-up copy failed, error code → ${?}"
+      exit 1
+    fi
   else
-    util_log INFO "Creating default configuration"
     lib_fish_create_config
   fi
 
-  util_log INFO "Adding Wahoo bootstrap → ${FISH_CONFIG}/config.fish"
-
-  local FISH_CONFIG_FILE="${FISH_CONFIG}/config.fish"
+  util_log INFO "Adding Wahoo bootstrap → ${FISH_CONFIG_FILE}"
+  touch ${FISH_CONFIG_FILE} >/dev/null 2>&1
+  if [ ! -w ${FISH_CONFIG_FILE} ]; then
+    util_log ERROR "Fish configuration file is not writable, aborting"
+    exit 1
+  fi
   local WAHOO_CONFIG="${HOME}/.config/wahoo"
   test -z ${CUSTOM+_} && CUSTOM="${BASE}/.dotfiles"
   echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
-  | sed -e "s|$HOME|\$HOME|")" > ${FISH_CONFIG_FILE}
+  | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
   echo "set -g WAHOO_CUSTOM $(echo "${CUSTOM}" \
   | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
   echo "source \$WAHOO_PATH/init.fish" >> ${FISH_CONFIG_FILE}
