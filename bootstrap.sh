@@ -106,11 +106,11 @@ util_log() {
 }
 
 util_log_default_success() {
-  util_log INFO "$1 successfully installed."
+  util_log INFO "$1 successfully installed"
 }
 
 util_log_default_error() {
-  util_log ERROR "You need admin permissions to continue."
+  util_log ERROR "You need admin permissions to continue"
 }
 
 util_display_success_msg() {
@@ -157,7 +157,7 @@ lib_fish_install() {
     fi
 
     mkdir -p "${HOME}/src"
-    git clone $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
+    git clone -q --depth 1 $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
     cd "${HOME}/${FISH_SOURCE}"
     autoconf
     ./configure --without-xsel
@@ -166,18 +166,18 @@ lib_fish_install() {
   }
 
   installer_darwin_run() {
-    git clone $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
+    git clone -q --depth 1 $FISH_REMOTE "${HOME}/${FISH_SOURCE}"
     cd "${HOME}/${FISH_SOURCE}"
     sudo xcodebuild install
     ditto /tmp/fish.dst /
   }
 
   if ! util_env_can git; then
-    util_log INFO "Installing git..."
+    util_log INFO "Installing 'git'"
     if lib_git_install; then
       util_log_default_success "git"
     else
-      util_log ERROR "You need admin permissions to install git"
+      util_log ERROR "You need admin permissions to install 'git'"
       exit 1
     fi
   fi
@@ -193,13 +193,13 @@ lib_fish_install() {
         exit 1
       fi
     else
-      util_log ERROR "You need Homebrew or Xcode tools."
-      util_log INFO "For Xcode try: xcode-select --install"
+      util_log ERROR "You need 'Homebrew' or 'Xcode' commandline tools"
+      util_log INFO "For Xcode try: 'xcode-select --install'"
       exit 1
     fi
   else
     if ! util_env_can "autoconf"; then
-      util_log INFO "Installing autoconf..."
+      util_log INFO "Installing 'autoconf'"
       if lib_autoconf_install; then
         util_log_default_success "autoconf"
       else
@@ -250,114 +250,79 @@ lib_autoconf_install() {
 }
 
 lib_wahoo_install() {
-  if [ -z ${BASE+_} ]; then
-    BASE="${HOME}"
-  fi
-
+  test -z ${BASE+_} && BASE="${HOME}"
   util_log INFO "Resolving Wahoo path → ${BASE}/.wahoo"
 
   if [ -d "${BASE}/.wahoo" ]; then
-    util_log ERROR "Wahoo is already installed."
-    util_log INFO "If you want to update Wahoo try: 'fish update'"
+    util_log WARN "Existing installation detected, aborting"
     exit 1
   fi
 
-  if [ -z ${PROTOCOL+_} ]; then
-    PROTOCOL="https"
-  fi
+  ## GIT CLONE ##
 
-  if [ -z ${HOST+_} ]; then
-    HOST="github.com"
-  fi
+  test -z ${PROTOCOL+_} && PROTOCOL="https"
+  test -z ${HOST+_} && HOST="github.com"
+  test -z ${REPO+_} && REPO="fish-shell/wahoo"
+  test -z ${BRANCH+_} && BRANCH="master"
+  local GIT_URL="${PROTOCOL}://${HOST}/${REPO}.git"
 
-  if [ -z ${REPO+_} ]; then
-    REPO="fish-shell/wahoo"
-  fi
-
-  if [ -z ${BRANCH+_} ]; then
-    BRANCH="master"
-  fi
-
-  URL="${PROTOCOL}://${HOST}/${REPO}.git"
-
-  util_log INFO "Cloning Wahoo from ${URL}"
-  if ! git clone -b "${BRANCH}" "${URL}" "${BASE}/.wahoo"; then
-    util_log ERROR "Could not clone the repository at ${BASE}/.wahoo:${BRANCH}"
-    util_log INFO "Please check your environment (git installed?) and try again."
+  util_log INFO "Cloning Wahoo → ${GIT_URL}"
+  if ! git clone -q --depth 1 -b "${BRANCH}" "${GIT_URL}" "${BASE}/.wahoo"; then
+    util_log ERROR "Could not clone the repository → ${BASE}/.wahoo:${BRANCH}"
+    util_log INFO "Please check your environment ('git' installed?) and try again"
     exit 1
   fi
 
-  ## REMOTES ##
-
-  util_log INFO "Updating repository remotes..."
-  git remote rm origin >/dev/null 2>&1
-  git remote add upstream $URL >/dev/null 2>&1
-
-  GITHUB_USER=$(git config github.user)
-  if [ -n "$GITHUB_USER" ]; then
-    util_log INFO "Forking Wahoo on GitHub..."
-    git remote add origin \
-      "https://github.com"/"$GITHUB_USER"/wahoo >/dev/null 2>&1
-    util_log WARN "Please fork Wahoo on GitHub and help us improve Wahoo."
-    # curl -u "$GITHUB_USER" --fail --silent \
-    #   https://api.github.com/repos/wahoo/forks \
-    #   -d "{\"user\":\"$GITHUB_USER\"}" >/dev/null ^&1
+  pushd ${BASE}/.wahoo >/dev/null 2>&1
+  local GIT_REV=$(git rev-parse HEAD) >/dev/null 2>&1
+  local GIT_UPSTREAM=$(git config remote.upstream.url)
+  if [ -z "${GIT_UPSTREAM}" ]; then
+    git remote add upstream ${GIT_URL}
   else
-    util_log WARN "GitHub user information not detected."
+    git remote set-url upstream ${GIT_URL}
   fi
+  util_log INFO "Wahoo revision id → ${GIT_REV}"
+  popd >/dev/null 2>&1
 
   ## CONFIGURATION ##
 
-  if [ -z ${FISH_CONFIG+_} ]; then
-    FISH_CONFIG="${HOME}/.config/fish"
-  fi
-
-  INIT="init.fish"
-  util_log INFO "Looking for a previous fish configuration..."
-
+  test -z ${FISH_CONFIG+_} && FISH_CONFIG="${HOME}/.config/fish"
   if [ -e "${FISH_CONFIG}/config.fish" ]; then
-    util_log INFO "Found ${FISH_CONFIG}/config.fish"
-    util_log WARN "Backing up to ${FISH_CONFIG}/config.copy"
+    util_log INFO "Found existing 'fish' configuration → ${FISH_CONFIG}/config.fish"
+    util_log WARN "Writing back-up copy → ${FISH_CONFIG}/config.copy"
     cp "${FISH_CONFIG}/config.fish" "${FISH_CONFIG}/config.copy"
   else
-    util_log INFO  "Adding default fish configuration."
+    util_log INFO "Creating default configuration"
     lib_fish_create_config
   fi
 
-  util_log WARN "Adding Wahoo bootstrap to ${FISH_CONFIG}/config.fish"
+  util_log INFO "Adding Wahoo bootstrap → ${FISH_CONFIG}/config.fish"
 
-  if [ -z ${CUSTOM+_} ]; then
-    CUSTOM="${BASE}/.dotfiles"
-  fi
-
+  local FISH_CONFIG_FILE="${FISH_CONFIG}/config.fish"
+  local WAHOO_CONFIG="${HOME}/.config/wahoo"
+  test -z ${CUSTOM+_} && CUSTOM="${BASE}/.dotfiles"
   echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
-  | sed -e "s|$HOME|\$HOME|")" > "${FISH_CONFIG}/config.fish"
-
+  | sed -e "s|$HOME|\$HOME|")" > ${FISH_CONFIG_FILE}
   echo "set -g WAHOO_CUSTOM $(echo "${CUSTOM}" \
-  | sed -e "s|$HOME|\$HOME|")" >> "${FISH_CONFIG}/config.fish"
-
-  echo "source \$WAHOO_PATH/${INIT}" >> "${FISH_CONFIG}/config.fish"
-
-  WAHOO_CONFIG="${HOME}/.config/wahoo"
+  | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
+  echo "source \$WAHOO_PATH/init.fish" >> ${FISH_CONFIG_FILE}
 
   if [ ! -d "${WAHOO_CONFIG}" ]; then
-    util_log WARN "Adding Wahoo configuration in ${WAHOO_CONFIG}"
+    util_log INFO "Writing Wahoo configuration → ${WAHOO_CONFIG}"
     mkdir -p "${WAHOO_CONFIG}"
-
-    if [ ! -e "${WAHOO_CONFIG}/theme" ]; then
-      echo default >> "${WAHOO_CONFIG}/theme"
-    fi
+    test -f "${WAHOO_CONFIG}/theme" || echo default > "${WAHOO_CONFIG}/theme"
+    test -f "${WAHOO_CONFIG}/revision" || echo ${GIT_REV} > "${WAHOO_CONFIG}/revision"
   fi
 }
 
 lib_main_run() {
   util_log TITLE "== Bootstraping Wahoo =="
-  util_log INFO "Installing dependencies..."
+  util_log INFO "Installing dependencies"
 
   if ! util_env_can "fish"; then
-    util_log INFO  "Installing fish..."
+    util_log INFO  "Installing 'fish'"
     if lib_fish_install; then
-      util_log WARN "Setting fish as your default shell."
+      util_log INFO "Setting 'fish' as your default shell"
       lib_fish_set_as_default_shell
     fi
   fi
@@ -372,7 +337,7 @@ lib_main_run() {
       util_env_swap_process "fish"
     fi
   else
-    util_log ERROR "Alas, Wahoo failed to install correctly."
+    util_log ERROR "Alas, Wahoo failed to install correctly"
     util_log INFO "Please complain here → git.io/wahoo-issues"
     exit 1
   fi
