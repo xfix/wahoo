@@ -1,18 +1,26 @@
 language: c
 os:
   - linux
-#  - osx # currently not supported
-sudo: false
+  - osx # currently not supported therefore status unknow ..
+matrix:
+  allow_failures:
+    - os: osx # .. so allow it to fail for now
+sudo: true # legacy travis infra, because we currently need sudo to install fish
 addons:
   apt:
     packages:
     - tree
-    - fish
-before_script: pwd; tree -h
+cache:
+  directories:
+  - src
+before_script:
+  - echo "build-no: ${TRAVIS_BUILD_NUMBER}\nrepo: ${TRAVIS_REPO_SLUG}\nbranch: ${TRAVIS_BRANCH}\ncommit: ${TRAVIS_COMMIT}\npull-request: ${TRAVIS_PULL_REQUEST}"
+  - pwd; tree -h
 script: /bin/sh bootstrap.sh
 after_script:
-  - cd ~/.config/fish; tree -h; find . -type f | xargs cat
-  - cd ~/.config/wahoo; tree -h; find . -type f | xargs cat
+  - echo revision: $(cat ~/.config/wahoo/revision)
+  - cd ~/.config/fish; tree -h
+  - cd ~/.config/wahoo; tree -h
 notifications:
   webhooks:
     urls:
