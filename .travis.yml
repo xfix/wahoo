@@ -15,7 +15,7 @@ cache:
   - src
 before_script:
   - echo "build-no: ${TRAVIS_BUILD_NUMBER}\nrepo: ${TRAVIS_REPO_SLUG}\nbranch: ${TRAVIS_BRANCH}\ncommit: ${TRAVIS_COMMIT}\npull-request: ${TRAVIS_PULL_REQUEST}"
-  - pwd; tree -h
+  - tree -h
 script: /bin/sh bootstrap.sh
 after_script:
   - echo revision: $(cat ~/.config/wahoo/revision)
