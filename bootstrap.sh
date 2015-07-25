@@ -311,7 +311,7 @@ lib_wahoo_install() {
   local WAHOO_CONFIG="${HOME}/.config/wahoo"
   test -z ${CUSTOM+_} && CUSTOM="${BASE}/.dotfiles"
   echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
-  | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
+  | sed -e "s|$HOME|\$HOME|")" > ${FISH_CONFIG_FILE}
   echo "set -g WAHOO_CUSTOM $(echo "${CUSTOM}" \
   | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
   echo "source \$WAHOO_PATH/init.fish" >> ${FISH_CONFIG_FILE}
