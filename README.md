@@ -29,6 +29,8 @@
 <b><a href="https://github.com/fish-shell/wahoo/wiki/Screencasts">Screencasts</a></b>
 |
 <b><a href="/CONTRIBUTING.md">Contributing</a></b>
+|
+<b><a href="/FAQ.md">FAQ</a></b>
 
   <p align="center">
     <a href="https://gitter.im/fish-shell/wahoo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
@@ -41,7 +43,7 @@
 
 # About
 
-_Wahoo_ is an all-purpose framework and package manager for the [fishshell][Fishshell]. It looks after your configuration and packages. It's lightining fast and easy to use.
+_Wahoo_ is an all-purpose framework for the [fishshell][Fishshell]. It looks after your configuration, themes and packages. It's lightining fast and easy to use.
 
 We love contributions, [fork and send us a PR](https://github.com/fish-shell/wahoo/fork).
 
