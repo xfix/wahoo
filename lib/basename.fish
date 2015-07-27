@@ -3,7 +3,7 @@
 #   basename [-s suffix] <string> [string...]
 #
 # OVERVIEW
-#   Wrap basename so it can handle multiple arguments on Linux.
+#   osx style variable arguments basename
 
 function basename -d "get the filename or directory part of a path"
   if test (uname) = "Darwin"
