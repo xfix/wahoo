@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Install dependencies and setup Wahoo.
+# Install dependencies and bootstrap Wahoo.
 #
 # USAGE
-#   ./bootstrap.sh
-#   curl git.io/wa | sh
+#   #1: curl -L git.io/wa | sh
+#   #2: curl -L git.io/wa > install && chmod +x install && ./install
 #
 # ENV
 #   CI          Bootstrap is running in a CI environment.
@@ -70,7 +70,7 @@ util_ink() {
 
 util_log() {
   if [ "$#" -eq 0 -o "$#" -gt 2 ]; then
-    echo "Usage: ink <fmt> <msg>"
+    echo "Usage: util_ink <fmt> <msg>"
     echo "Formatting Options:"
     echo "  TITLE, ERROR, WARN, INFO, SUCCESS"
     return 1
@@ -276,11 +276,13 @@ lib_wahoo_install() {
   pushd ${BASE}/.wahoo >/dev/null 2>&1
   local GIT_REV=$(git rev-parse HEAD) >/dev/null 2>&1
   local GIT_UPSTREAM=$(git config remote.upstream.url)
+
   if [ -z "${GIT_UPSTREAM}" ]; then
     git remote add upstream ${GIT_URL}
   else
     git remote set-url upstream ${GIT_URL}
   fi
+
   util_log INFO "Wahoo revision id → ${GIT_REV}"
   popd >/dev/null 2>&1
 
@@ -291,8 +293,10 @@ lib_wahoo_install() {
   if [ -e "${FISH_CONFIG}/config.fish" ]; then
     local TIMESTAMP=$(date +%s)
     local FISH_CONFIG_BK="${FISH_CONFIG}/config.${TIMESTAMP}.copy"
+
     util_log INFO "Found existing 'fish' configuration → ${FISH_CONFIG_FILE}"
     util_log INFO "Writing back-up copy → ${FISH_CONFIG_BK}"
+
     cp "${FISH_CONFIG_FILE}" "${FISH_CONFIG_BK}" >/dev/null 2>&1
     if [ $? -ne 0 ]; then
       util_log ERROR "Writing back-up copy failed, error code → ${?}"
@@ -310,10 +314,13 @@ lib_wahoo_install() {
   fi
   local WAHOO_CONFIG="${HOME}/.config/wahoo"
   test -z ${CUSTOM+_} && CUSTOM="${BASE}/.dotfiles"
+
   echo "set -g WAHOO_PATH $(echo "${BASE}/.wahoo" \
   | sed -e "s|$HOME|\$HOME|")" > ${FISH_CONFIG_FILE}
+
   echo "set -g WAHOO_CUSTOM $(echo "${CUSTOM}" \
   | sed -e "s|$HOME|\$HOME|")" >> ${FISH_CONFIG_FILE}
+
   echo "source \$WAHOO_PATH/init.fish" >> ${FISH_CONFIG_FILE}
 
   if [ ! -d "${WAHOO_CONFIG}" ]; then
@@ -325,7 +332,7 @@ lib_wahoo_install() {
 }
 
 lib_main_run() {
-  util_log TITLE "== Bootstraping Wahoo =="
+  util_log TITLE "Bootstraping Wahoo..."
   util_log INFO "Installing dependencies"
 
   if ! util_env_can "fish"; then
