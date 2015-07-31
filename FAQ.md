@@ -90,4 +90,8 @@ Wahoo uses event emitters to initialize and uninstall plugins. Some Oh My Fish p
 
 ## I changed my prompt with `fish_config` and now I can't get my Wahoo theme's prompt back, what do I do?
 
-`fish_config` persists the prompt to `~/.config/fish/functions/fish_prompt.fish`. That file gets loaded _after_ the Wahoo theme, therefore it takes precedence over the Wahoo theme's prompt. To restore your Wahoo theme prompt, simply remove that file.
+`fish_config` persists the prompt to `~/.config/fish/functions/fish_prompt.fish`. That file gets loaded _after_ the Wahoo theme, therefore it takes precedence over the Wahoo theme's prompt. To restore your Wahoo theme prompt, simply remove that file by running:
+
+```
+rm ~/.config/fish/functions/fish_prompt.fish
+```
