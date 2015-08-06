@@ -26,7 +26,7 @@ _Nothing_. You can install Wahoo just to take advantage of the universal fish in
 Wahoo packages are themes or plugins written in fish that extend the shell core functionality, run code during initialization, add auto completion for known utilities, etc.
 
 
-## What kind of Wahoo packages exist?
+## What kind of Wahoo packages are there?
 
 There are roughly 3 kinds of packages:
 
@@ -82,7 +82,7 @@ Yes. To install a theme:
 
 ## Does Wahoo support Oh My Fish plugins?
 
-No, but we have your covered in the [Wahoo Foundry](https://github.com/wa/).
+No, but we got you covered in the [Wahoo Foundry](https://github.com/wa/).
 
 #### Long Answer
 
