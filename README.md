@@ -1,4 +1,4 @@
-> Another [Fish][fishshell] Framework 
+> The [Fish][fishshell] Framework 
 
 <span align="center">
   <a href="http://fishshell.com">
