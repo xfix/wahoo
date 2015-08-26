@@ -1,4 +1,4 @@
-> The [Fishshell][fishshell] Framework
+> [Fishshell][fishshell] Foundation Framework
 
 ![][fish-badge]
 [![][travis-logo]][travis]
@@ -11,11 +11,10 @@
 
 <p align="center">
   <a href="https://github.com/fish-shell/wahoo/blob/master/README.md">
-  <img width="300px" src="https://cloud.githubusercontent.com/assets/8317250/8775571/6930d858-2f24-11e5-9629-c3cc833d71e8.png">
+  <img width="250px" src="https://cloud.githubusercontent.com/assets/8317250/8775571/6930d858-2f24-11e5-9629-c3cc833d71e8.png">
   </a>
 </p>
 
-<br>
 
 <p align="center">
 <b><a href="#about">About</a></b>
@@ -29,50 +28,40 @@
 <b><a href="https://github.com/fish-shell/wahoo/wiki/Screencasts">Screencasts</a></b>
 |
 <b><a href="/CONTRIBUTING.md">Contributing</a></b>
-|
-<b><a href="/FAQ.md">FAQ</a></b>
 
-  <p align="center">
-    <a href="https://gitter.im/fish-shell/wahoo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-      <img src="https://badges.gitter.im/Join%20Chat.svg">
-    </a>
-  </p>
-</p>
 
 <br>
 
 # About
 
-_Wahoo_ is an all-purpose framework for the [fishshell][Fishshell]. It looks after your configuration, themes and packages. It's lightining fast and easy to use.
+> <span align="center">
+  <a href="https://github.com/fish-shell/oh-my-fish">
+  <img width="35px" src="https://cloud.githubusercontent.com/assets/8317250/8510172/f006f0a4-230f-11e5-98b6-5c2e3c87088f.png">
+  </a>
+</span>&nbsp; Wahoo is now [Oh My Fish!](https://github.com/fish-shell/oh-my-fish) Please [upgrade](https://github.com/fish-shell/oh-my-fish#install)!
 
-We love contributions, [fork and send us a PR](https://github.com/fish-shell/wahoo/fork).
+Wahoo was an all-purpose framework for the [fishshell][Fishshell]. It looked after your configuration, themes and packages. It was lightining fast and easy to use.
+
+Thank you [everyone](https://github.com/bucaran/wahoo/graphs/contributors) who participated in this project :heart:
+
+
+[@gretel](https://github.com/gretel) [@hauleth](https://github.com/hauleth) [@joefiorini](https://github.com/joefiorini) [@bpinto](https://github.com/bpinto) [@scorphus](https://github.com/scorphus) [@cap10morgan](https://github.com/cap10morgan) [@daveyarwood](https://github.com/daveyarwood)
 
 # Install
+
+> No `fish`? `sudo` and let me do that for you.
 
 ```sh
 curl -L git.io/wa | sh
 wa help
 ```
 
-Or _download first_ and run it yourself:
-
-```sh
-curl -L git.io/wa > install
-chmod +x install
-./install
-```
-
-> **Note**: If you haven't installed `fish` already, you may need to `sudo` in order to _change the default_ shell.
-
 # :beginner: Getting Started
-
-Wahoo includes a small utility `wa` to fetch and install new packages and themes.
 
 ## `wa update`
 
 Update framework and installed packages.
 
-> If you have unstaged changes in your local copy, these are [stashed](https://git-scm.com/book/no-nb/v1/Git-Tools-Stashing) and reapplied after pulling updates from upstream. Committed changes are [rebased](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) with master.
 
 ## `wa get` _`<package> ...`_
 
@@ -235,15 +224,15 @@ set -g WAHOO_IGNORE skip this that ...
 
 # License
 
-[MIT][license] © [Authors][contributors] :heart:
+[MIT][license] © [Authors][contributors] :metal:
 
 
 
 [fish-badge]: https://img.shields.io/badge/fish-v2.2.0-FF3157.svg?style=flat-square
 [license]: http://opensource.org/licenses/MIT
-[license-badge]: https://img.shields.io/badge/license-mit-707070.svg?style=flat-square
+[license-badge]: https://img.shields.io/badge/license-MIT-FF3157.svg?style=flat-square
 [contributors]: https://github.com/fish-shell/wahoo/graphs/contributors
-[travis-logo]: http://img.shields.io/travis/fish-shell/wahoo.svg?style=flat-square
-[travis]: https://travis-ci.org/fish-shell/wahoo
+[travis-logo]: http://img.shields.io/travis/bucaran/wahoo.svg?style=flat-square
+[travis]: https://travis-ci.org/bucaran/wahoo
 [fishshell]: http://fishshell.com
 [wahoo-pulls-link]: https://github.com/fish-shell/wahoo/pulls
