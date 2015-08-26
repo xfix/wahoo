@@ -1,4 +1,4 @@
-> [Fishshell][fishshell] Universal Framework 
+> Another [Fish][fishshell] Framework 
 
 <span align="center">
   <a href="http://fishshell.com">
