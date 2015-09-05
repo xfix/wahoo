@@ -38,7 +38,7 @@
 
 # About
 
-> :warning: Wahoo is now [Oh My Fish!](https://github.com/fish-shell/oh-my-fish) Please [upgrade](https://github.com/fish-shell/oh-my-fish#install)!
+> :warning: Wahoo is now [Oh My Fish!](https://github.com/oh-my-fish/oh-my-fish) Please [upgrade](https://github.com/oh-my-fish/oh-my-fish#install)!
 
 Wahoo was an all-purpose framework for the [fishshell][Fishshell]. It looked after your configuration, themes and packages. It was lightining fast and easy to use.
 
